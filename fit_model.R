@@ -1,4 +1,4 @@
-## MILAD KHARRATZADEH - FEB 2018
+## MILAD KHARRATZADEH - FEB 2018 
 
 library("rstan")
 rstan_options(auto_write = TRUE)

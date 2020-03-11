@@ -485,3 +485,4 @@ alpha <- 0.5
 scd_ub <- colQuantiles(scd_sims, probs = 1-(1-alpha)/2, na.rm = TRUE)
 scd_lb <- colQuantiles(scd_sims, probs = (1-alpha)/2, na.rm = TRUE)
 cip50 <- sum(scd < scd_ub & scd_lb<scd)/190
+
