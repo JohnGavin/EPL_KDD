@@ -5,8 +5,8 @@
 library (arm)
 library(rstan)
 library(matrixStats)
-season<-07
-week<-38
+season<-15
+week<-05
 epl <- readRDS(paste('DATA/epl_', sprintf("%02d%02d", season, season+1), '.rds',sep=""))
 a_sims<-readRDS(paste('FITS/sims_', sprintf("%02d%02d", season, season+1), '.rds',sep=""))
 curr_perf <- epl$team_pts;
@@ -31,7 +31,7 @@ coefplot (a_hat[sort_perf], a_se[order(sort_perf)],
 library(rstan)
 library (arm)
 library(matrixStats)
-season<-05
+season<-15
 epl <- readRDS(paste('DATA/epl_', sprintf("%02d%02d", season, season+1), '.rds',sep=""))
 a_sims<-readRDS(paste('FITS/sims_', sprintf("%02d%02d", season, season+1), '.rds',sep=""))
 a_hat <- matrix(NA, nrow=38, ncol=20)
@@ -44,7 +44,7 @@ a_min <- a_hat-a_se
 a_max <- a_hat+a_se
 curr_perf <- epl$team_pts;
 sort_perf <- rev(order(curr_perf));
-png ("ab_evol.png", height=10, width=8, units = 'in', res = 200)
+# png("ab_evol.png", height=10, width=8, units = 'in', res = 200)
 attach(mtcars)
 op <- par(mfrow = c(5,4),
           oma = c(5,4,0,0) + 0.1,
@@ -75,7 +75,7 @@ title(xlab = "week",
       outer = TRUE, line = 3, cex.lab=1.5)
 mtext("score difference",side=4,col="red",line=-1.5, outer = TRUE) 
 par(op)
-invisible(dev.off())
+invisible(dev.off.off())
 
 
 ############################################################################
@@ -137,7 +137,7 @@ tau_a <- array(NA, c(16,nsamples))
 nu <- array(NA, c(16,nsamples))
 sigma_y <- array(NA, c(16,nsamples))
 sigma_a <- array(NA, c(16,nsamples,20))
-for (season in 0:15) { 
+for (season in 14:15) { 
   fit <- readRDS(paste('FITS/fit_', sprintf("%02d%02d_%02d", season, season+1, w), '.rds',sep=""))
   sims <- extract(fit)
   b_home[(season+1),] <- sims$b_home
@@ -149,8 +149,8 @@ for (season in 0:15) {
 }
 
 
-png ("b_home.png", height=4, width=6, units = 'in', res = 200)
-plot(c(0:15), rowMeans(b_home),
+# # png("b_home.png", height=4, width=6, units = 'in', res = 200)
+plot(c(14:15), rowMeans(b_home),
      ylim=range(c(rowMeans(b_home)-rowSds(b_home), rowMeans(b_home)+rowSds(b_home))),
      pch=19, xlab="Season", ylab="B_home",
      main="Home Team Effect", xaxt = "n"
@@ -160,10 +160,10 @@ axis(1, at=c(0,5,10,15), labels=c("00-01", "05-06", "10-11", "15-16"))
 arrows(c(0:15), rowMeans(b_home)-rowSds(b_home), 
        c(0:15), rowMeans(b_home)+rowSds(b_home), 
        length=0.05, angle=90, code=3)
-dev.off()
+# # dev.off()
 
 
-png ("sigma_a.png", height=4, width=6, units = 'in', res = 200)
+# # png("sigma_a.png", height=4, width=6, units = 'in', res = 200)
 sigma_a<-apply(sigma_a, c(1,2), mean)
 plot(c(0:15), rowMeans(sigma_a),
      ylim=range(c(rowMeans(sigma_a)-rowSds(sigma_a), rowMeans(sigma_a)+rowSds(sigma_a))),
@@ -175,10 +175,10 @@ axis(1, at=c(0,5,10,15), labels=c("00-01", "05-06", "10-11", "15-16"))
 arrows(c(0:15), rowMeans(sigma_a)-rowSds(sigma_a), 
        c(0:15), rowMeans(sigma_a)+rowSds(sigma_a), 
        length=0.05, angle=90, code=3)
-dev.off()
+## dev.off()
 
 
-png ("sigma_y.png", height=4, width=6, units = 'in', res = 200)
+# # png("sigma_y.png", height=4, width=6, units = 'in', res = 200)
 plot(c(0:15), rowMeans(sigma_y),
      ylim=range(c(rowMeans(sigma_y)-rowSds(sigma_y), rowMeans(sigma_y)+rowSds(sigma_y))),
      pch=19, xlab="Season", ylab="sigma_y",
@@ -189,10 +189,10 @@ axis(1, at=c(0,5,10,15), labels=c("00-01", "05-06", "10-11", "15-16"))
 arrows(c(0:15), rowMeans(sigma_y)-rowSds(sigma_y), 
        c(0:15), rowMeans(sigma_y)+rowSds(sigma_y), 
        length=0.05, angle=90, code=3)
-dev.off()
+# dev.off()
 
 
-png ("b_prev.png", height=4, width=6, units = 'in', res = 200)
+# # png("b_prev.# png", height=4, width=6, units = 'in', res = 200)
 b_prev <- b_prev[2:16,]
 plot(c(1:15), rowMeans(b_prev),
      ylim=range(c(rowMeans(b_prev)-rowSds(b_prev), rowMeans(b_prev)+rowSds(b_prev))),
@@ -204,10 +204,10 @@ axis(1, at=c(1,5,10,15), labels=c("01-02", "05-06", "10-11", "15-16"))
 arrows(c(1:15), rowMeans(b_prev)-rowSds(b_prev), 
        c(1:15), rowMeans(b_prev)+rowSds(b_prev), 
        length=0.05, angle=90, code=3)
-dev.off()
+# dev.off()
 
 
-png ("tau_a.png", height=4, width=6, units = 'in', res = 200)
+# # png("tau_a.# png", height=4, width=6, units = 'in', res = 200)
 plot(c(0:15), rowMeans(tau_a),
      ylim=range(c(rowMeans(tau_a)-rowSds(tau_a), rowMeans(tau_a)+rowSds(tau_a))),
      pch=19, xlab="Season", ylab="tau_a",
@@ -218,7 +218,7 @@ axis(1, at=c(0,5,10,15), labels=c("00-01", "05-06", "10-11", "15-16"))
 arrows(c(0:15), rowMeans(tau_a)-rowSds(tau_a), 
        c(0:15), rowMeans(tau_a)+rowSds(tau_a), 
        length=0.05, angle=90, code=3)
-dev.off()
+# dev.off()
 
 
 
@@ -238,7 +238,7 @@ for (w in 1:38) {
   sigma_y[w,] <- sims$sigma_y
 }
 
-png ("b_home_15.png", height=4, width=6, units = 'in', res = 200)
+# # png("b_home_15.png", height=4, width=6, units = 'in', res = 200)
 plot(c(1:38), rowMeans(b_home), type="l", lwd=3,
      ylim=range(c(rowMeans(b_home)-rowSds(b_home), rowMeans(b_home)+rowSds(b_home))),
      pch=19, xlab="Week", ylab="B_home")
@@ -246,10 +246,10 @@ plot(c(1:38), rowMeans(b_home), type="l", lwd=3,
 arrows(c(1:38), rowMeans(b_home)-rowSds(b_home), 
        c(1:38), rowMeans(b_home)+rowSds(b_home), 
        length=0.03, angle=90, code=3, lwd=1.5)
-dev.off()
+# # dev.off()
 
 
-png ("b_prev_15.png", height=4, width=6, units = 'in', res = 200)
+png ("b_prev_15.# png", height=4, width=6, units = 'in', res = 200)
 plot(c(1:38), rowMeans(b_prev), type="l", lwd=3,
      ylim=range(c(rowMeans(b_prev)-rowSds(b_prev), rowMeans(b_prev)+rowSds(b_prev))),
      pch=19, xlab="Week", ylab="B_prev")
@@ -257,7 +257,7 @@ plot(c(1:38), rowMeans(b_prev), type="l", lwd=3,
 arrows(c(1:38), rowMeans(b_prev)-rowSds(b_prev), 
        c(1:38), rowMeans(b_prev)+rowSds(b_prev), 
        length=0.03, angle=90, code=3, lwd=1.5)
-dev.off()
+# # dev.off()
 
 png ("sigma_y_15.png", height=4, width=6, units = 'in', res = 200)
 plot(c(1:38), rowMeans(sigma_y), type="l", lwd=3,
@@ -267,7 +267,7 @@ plot(c(1:38), rowMeans(sigma_y), type="l", lwd=3,
 arrows(c(1:38), rowMeans(sigma_y)-rowSds(sigma_y), 
        c(1:38), rowMeans(sigma_y)+rowSds(sigma_y), 
        length=0.03, angle=90, code=3, lwd=1.5)
-dev.off()
+# # dev.off()
 
 
 ############################################################################
@@ -308,26 +308,26 @@ for (i in 11:380) {
 
 game_ind1 <- which(epl$home_team==1 & epl$away_team==12) # Arsenal vs Norwich
 
-png ("ars_nor.png", height=4, width=6, units = 'in', res = 200)
+# png("ars_nor.png", height=4, width=6, units = 'in', res = 200)
 opar <- par(lwd=3)
 hist(score_diff_pred[game_ind1,], breaks=seq(-4.5,7.5,by=1), xlab = "Arsenal Goals - Norwich Goals", main="")
 axis(side=1,lwd=3)
 axis(side=2,lwd=3)
 lines(c(epl$score_diff[game_ind1],epl$score_diff[game_ind1]),c(0,500), col="red", lwd=6)
 par(opar)
-dev.off()
+# dev.off()
 
 game_ind2 <- which(epl$home_team==2 & epl$away_team==4) # Aston Villa vs Chelsea
 
 
-png ("asv_che.png", height=4, width=6, units = 'in', res = 200)
+# png("asv_che.png", height=4, width=6, units = 'in', res = 200)
 opar <- par(lwd=3)
 hist(score_diff_pred[game_ind2,], breaks=seq(-10.5,10.5,by=1), xlab = "Aston Villa Goals - Chelsea Goals", main="", xlim = c(-7,5))
 axis(side=1,lwd=3)
 axis(side=2,lwd=3)
 lines(c(epl$score_diff[game_ind2],epl$score_diff[game_ind2]),c(0,500), col="red", lwd=6)
 par(opar)
-dev.off()
+# dev.off()
 
 
 ##############################################################################################################
@@ -341,7 +341,7 @@ c2 <- array(NA,16)
 nsamples=2000
 library(rstan)
 library(matrixStats)
-for (season in 0:15) {
+for (season in 14:15) {
   epl <- readRDS(paste('DATA/epl_', sprintf("%02d%02d", season, season+1), '.rds',sep=""))
   a_sims<-readRDS(paste('FITS/sims_', sprintf("%02d%02d", season, season+1), '.rds',sep=""))
   b_home <- array(NA, c(38,nsamples))
@@ -418,7 +418,7 @@ bet_probs[,1] <- bet_probs[,1]/rowsum
 bet_probs[,2] <- bet_probs[,2]/rowsum
 bet_probs[,3] <- bet_probs[,3]/rowsum
 
-png ("scatter.png", height=5, width=5, units = 'in', res = 200)
+# png("scatter.png", height=5, width=5, units = 'in', res = 200)
 opar <- par(lwd=2)
 plot(bet_probs[,1], est_probs[,1], ylab="Estimated probability of home win", xlab="BET365 probability of home win",
      xlim = c(0.1,0.85),ylim = c(0.1,0.85))
@@ -426,7 +426,7 @@ lines(c(0,0.9), c(0,0.9), col="red")
 axis(side=1,lwd=2)
 axis(side=2,lwd=2)
 par(opar)
-dev.off()
+# dev.off()
 
 cor(est_probs[,1],bet_probs[,1])
 cor(est_probs[,2],bet_probs[,2])
@@ -458,7 +458,7 @@ df <- data.frame(list(scd = sort_scd, scd_hat = sort_scd_hat, scd_se = sort_scd_
                       scd_ub = sort_scd_ub, scd_lb = sort_scd_lb, 
                       scd_ub2 = sort_scd_ub2, scd_lb2 = sort_scd_lb2))
 
-png ("ppc.png", height=5, width=12, units = 'in', res = 200)
+# png("ppc.png", height=5, width=12, units = 'in', res = 200)
 ggplot(df, aes(x = c(1:190))) +
   geom_ribbon(aes(ymin = scd_lb,
                   ymax = scd_ub),
@@ -472,7 +472,7 @@ ggplot(df, aes(x = c(1:190))) +
   scale_y_continuous(name="score difference", minor_breaks = seq(-6, 6, 1), 
                      sec.axis = dup_axis()) #+
   #ggtitle("Predicted score differences (red) with 95% intervals (light yellow), \n  50% intervals (dark yellow), and the actual score differences (black)");
-dev.off()
+# dev.off()
 
 scd <- epl$score_diff[191:380]
 scd_sims <- t(score_diff_pred[191:380,])
@@ -485,3 +485,4 @@ alpha <- 0.5
 scd_ub <- colQuantiles(scd_sims, probs = 1-(1-alpha)/2, na.rm = TRUE)
 scd_lb <- colQuantiles(scd_sims, probs = (1-alpha)/2, na.rm = TRUE)
 cip50 <- sum(scd < scd_ub & scd_lb<scd)/190
+

@@ -1,11 +1,11 @@
-## MILAD KHARRATZADEH - FEB 2018
+## MILAD KHARRATZADEH - FEB 2018 
 
 library("rstan")
 rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 sm <- stan_model("epl_model.stan")
 nsamples <- 2000
-for (i in 0:15) {
+for (i in 14:15) {
   epl <- readRDS(paste('DATA/epl_', sprintf("%02d%02d", i, i+1), '.rds',sep=""))
   a_sims <- array(NA, c(nsamples, epl$nweeks, epl$nteams))
   for (w in 1:38) {
